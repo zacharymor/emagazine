@@ -1,0 +1,71 @@
+{% extends "base.html" %}
+
+{% block title %}All Articles{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-3 article-list">
+        <h2>Articles</h2>
+        <ul class="list-group">
+            {% if articles %}
+                {% for article in articles %}
+                    <li class="list-group-item article-item" onclick="displayArticle('{{ article.title }}', `{{ article.content|replace('\n', '\\n') }}`)">
+                        Read "{{ article.title }}"
+                    </li>
+                {% endfor %}
+            {% else %}
+                <p class="text-warning">No articles available. Please submit an article!</p>
+            {% endif %}
+        </ul>
+    </div>
+
+    <div class="col-md-6 main-article">
+        <h2 id="article-title">Article Title</h2>
+        <h3>Content</h3>
+        <p id="article-content">Article content will be displayed here.</p>
+    </div>
+
+    <div class="col-md-3 submission-form">
+        <h2>Submit an Article</h2>
+        <form action="/submit-article" method="POST">
+            <div class="mb-3">
+                <label for="title" class="form-label">Article Title:</label>
+                <input type="text" class="form-control" id="title" name="title" required>
+            </div>
+
+            <div class="mb-3">
+                <label for="content" class="form-label">Content:</label>
+                <textarea class="form-control" id="content" name="content" rows="4" required></textarea>
+            </div>
+
+            <div class="mb-3">
+                <label for="type" class="form-label">Type:</label>
+                <select class="form-control" id="type" name="type" required>
+                    <option value="recipe">Recipe</option>
+                    <option value="blog">Blog</option>
+                    <option value="news">News</option>
+                </select>
+            </div>
+
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+    </div>
+</div>
+
+<script>
+    function displayArticle(title, content) {
+        document.getElementById('article-title').innerText = title;
+        document.getElementById('article-content').innerText = content;
+    }
+
+    window.onload = function() {
+        // Automatically display the first article
+        {% if articles|length > 0 %}
+        displayArticle(
+            "{{ articles[0].title }}",
+            `{{ articles[0].content|replace('\n', '\\n') }}`
+        );
+        {% endif %}
+    }
+</script>
+{% endblock %}

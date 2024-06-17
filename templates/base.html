@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Recipe Book{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='boot/bootstrap.min.css') }}">
+    <style>
+        html, body {
+            height: 100%;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+        }
+        body {
+            font-family: Arial, sans-serif;
+        }
+        .container {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+        .content {
+            flex: 1;
+        }
+        footer {
+            background-color: #333;
+            color: white;
+            text-align: center;
+            padding: 10px 0;
+        }
+        .social-icons a {
+            margin: 0 10px;
+            text-decoration: none;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <header class="bg-primary text-white text-center py-3">
+        <h1>Recipe Book</h1>
+        <nav>
+            <a class="text-white" href="{{ url_for('index') }}">Home</a> |
+            <a class="text-white" href="{{ url_for('about') }}">About</a> |
+            <a class="text-white" href="{{ url_for('submit_recipe') }}">Submit a Recipe</a>
+        </nav>
+    </header>
+    <div class="container">
+        <div class="content">
+            {% block content %}{% endblock %}
+        </div>
+    </div>
+    <footer>
+        <p>Follow us on:</p>
+        <div class="social-icons">
+            <a href="#"><img src="https://via.placeholder.com/20x20" alt="Facebook"></a>
+            <a href="#"><img src="https://via.placeholder.com/20x20" alt="Twitter"></a>
+            <a href="#"><img src="https://via.placeholder.com/20x20" alt="Instagram"></a>
+            <a href="#"><img src="https://via.placeholder.com/20x20" alt="LinkedIn"></a>
+        </div>
+        <p>&copy; 2024 Recipe Book. All rights reserved.</p>
+    </footer>
+</body>
+</html>
