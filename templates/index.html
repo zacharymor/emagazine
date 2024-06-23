@@ -4,28 +4,63 @@
 
 {% block content %}
 <div class="row">
-    <div class="col-md-3 article-list">
-        <h2>Articles</h2>
-        <ul class="list-group">
-            {% if articles %}
+    <div class="col-md-2 article-list my-4">        
+        <div class="mb-3">
+            <h2>Blogs</h2>
+            <ul class="list-group">
                 {% for article in articles %}
-                    <li class="list-group-item article-item" onclick="displayArticle('{{ article.title }}', `{{ article.content|replace('\n', '\\n') }}`)">
-                        Read "{{ article.title }}"
-                    </li>
+                    {% if article.type == 'blog' %}
+                        <button type="button" class="list-group-item article-item btn btn-link text-start" onclick="displayArticle(this, '{{ article.title }}', `{{ article.content|replace('\n', '\\n') }}`)">
+                            {{ article.title }}
+                        </button>
+                    {% endif %}
                 {% endfor %}
-            {% else %}
-                <p class="text-warning">No articles available. Please submit an article!</p>
-            {% endif %}
-        </ul>
+                {% if articles|selectattr('type', 'eq', 'blog')|list|length == 0 %}
+                    <p class="text-warning">No blogs available.</p>
+                {% endif %}
+            </ul>
+        </div>
+
+        <div class="my-3">
+            <h2>News</h2>
+            <ul class="list-group">
+                {% for article in articles %}
+                    {% if article.type == 'news' %}
+                        <button type="button" class="list-group-item article-item btn btn-link text-start" onclick="displayArticle(this, '{{ article.title }}', `{{ article.content|replace('\n', '\\n') }}`)">
+                            {{ article.title }}
+                        </button>
+                    {% endif %}
+                {% endfor %}
+                {% if articles|selectattr('type', 'eq', 'news')|list|length == 0 %}
+                    <p class="text-warning">No news available.</p>
+                {% endif %}
+            </ul>
+        </div>
+
+        <div class="mb-3">
+            <h2>Recipes</h2>
+            <ul class="list-group">
+                {% for article in articles %}
+                    {% if article.type == 'recipe' %}
+                        <button type="button" class="list-group-item article-item btn btn-link text-start" onclick="displayArticle(this, '{{ article.title }}', `{{ article.content|replace('\n', '\\n') }}`)">
+                            {{ article.title }}
+                        </button>
+                    {% endif %}
+                {% endfor %}
+                {% if articles|selectattr('type', 'eq', 'recipe')|list|length == 0 %}
+                    <p class="text-warning">No recipes available.</p>
+                {% endif %}
+            </ul>
+        </div>
     </div>
 
-    <div class="col-md-6 main-article">
+    <div class="col-md-6 main-article my-4">
         <h2 id="article-title">Article Title</h2>
-        <h3>Content</h3>
+        <!-- <h3>Content</h3> -->
         <p id="article-content">Article content will be displayed here.</p>
     </div>
 
-    <div class="col-md-3 submission-form">
+    <div class="col-md-3 submission-form my-4">
         <h2>Submit an Article</h2>
         <form action="/submit-article" method="POST">
             <div class="mb-3">
@@ -53,15 +88,31 @@
 </div>
 
 <script>
-    function displayArticle(title, content) {
+    // Global variable to store the last clicked button
+    let lastClickedButton = null;
+
+    function displayArticle(button, title, content) {
+        // Update main article content
         document.getElementById('article-title').innerText = title;
         document.getElementById('article-content').innerText = content;
+
+        // Remove active class from the previously clicked button, if exists
+        if (lastClickedButton) {
+            lastClickedButton.classList.remove('active');
+        }
+
+        // Add active class to the current button
+        button.classList.add('active');
+
+        // Update lastClickedButton to the current button
+        lastClickedButton = button;
     }
 
     window.onload = function() {
         // Automatically display the first article
         {% if articles|length > 0 %}
         displayArticle(
+            document.querySelector('.article-item'),
             "{{ articles[0].title }}",
             `{{ articles[0].content|replace('\n', '\\n') }}`
         );
