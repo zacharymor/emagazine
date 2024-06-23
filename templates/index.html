@@ -4,24 +4,8 @@
 
 {% block content %}
 <div class="row">
-    <div class="col-md-2 article-list my-4">
+    <div class="col-md-2 article-list my-4">        
         <div class="mb-3">
-            <h2>Recipes</h2>
-            <ul class="list-group">
-                {% for article in articles %}
-                    {% if article.type == 'recipe' %}
-                        <button type="button" class="list-group-item article-item btn btn-link text-start" onclick="displayArticle(this, '{{ article.title }}', `{{ article.content|replace('\n', '\\n') }}`)">
-                            {{ article.title }}
-                        </button>
-                    {% endif %}
-                {% endfor %}
-                {% if articles|selectattr('type', 'eq', 'recipe')|list|length == 0 %}
-                    <p class="text-warning">No recipes available.</p>
-                {% endif %}
-            </ul>
-        </div>
-        
-        <div class="my-3">
             <h2>Blogs</h2>
             <ul class="list-group">
                 {% for article in articles %}
@@ -52,11 +36,27 @@
                 {% endif %}
             </ul>
         </div>
+
+        <div class="mb-3">
+            <h2>Recipes</h2>
+            <ul class="list-group">
+                {% for article in articles %}
+                    {% if article.type == 'recipe' %}
+                        <button type="button" class="list-group-item article-item btn btn-link text-start" onclick="displayArticle(this, '{{ article.title }}', `{{ article.content|replace('\n', '\\n') }}`)">
+                            {{ article.title }}
+                        </button>
+                    {% endif %}
+                {% endfor %}
+                {% if articles|selectattr('type', 'eq', 'recipe')|list|length == 0 %}
+                    <p class="text-warning">No recipes available.</p>
+                {% endif %}
+            </ul>
+        </div>
     </div>
 
     <div class="col-md-6 main-article my-4">
         <h2 id="article-title">Article Title</h2>
-        <h3>Content</h3>
+        <!-- <h3>Content</h3> -->
         <p id="article-content">Article content will be displayed here.</p>
     </div>
 
