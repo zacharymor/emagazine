@@ -1,12 +1,13 @@
 from flask import Flask, render_template, request, redirect, url_for
 from flask_sqlalchemy import SQLAlchemy
+from decouple import config
 
 app = Flask(__name__)
-dbname = 'article'
-dbuser = 'postgres'
-dbpass = 'XXX'
+dbname = config('DB_NAME')
+dbuser = config('DB_USER')
+dbpass = config('DB_PASS')
 
-app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql+psycopg2://'+dbuser+':'+dbpass+'@localhost/' + dbname
+app.config['SQLALCHEMY_DATABASE_URI'] = f'postgresql+psycopg2://{dbuser}:{dbpass}@localhost/{dbname}'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 # Initialize the database
